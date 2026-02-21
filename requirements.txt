@@ -1,8 +1,10 @@
 flask
+flask-cors
 mysql-connector-python
 gunicorn
-flask-cors
 requests
+razorpay
+reportlab
 numpy
 pillow
 tensorflow
