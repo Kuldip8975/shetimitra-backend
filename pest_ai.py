@@ -4,25 +4,26 @@ import numpy as np
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODELS_DIR = os.path.join(os.path.dirname(BASE_DIR), "ai_training")
 
 MODELS = {
     "maize": tf.keras.models.load_model(
-        os.path.join(BASE_DIR, "models", "maize_disease_model.keras")
+        os.path.join(MODELS_DIR, "maize_disease_model.keras")
     ),
     "cotton": tf.keras.models.load_model(
-        os.path.join(BASE_DIR, "models", "cotton_disease_model.keras")
+        os.path.join(MODELS_DIR, "cotton_disease_model.keras")
     ),
     "chickpea": tf.keras.models.load_model(
-        os.path.join(BASE_DIR, "models", "chickpea_disease_model.keras")
+        os.path.join(MODELS_DIR, "chickpea_disease_model.keras")
     ),
     "groundnut": tf.keras.models.load_model(
-        os.path.join(BASE_DIR, "models", "groundnut_disease_model.keras")
+        os.path.join(MODELS_DIR, "groundnut_disease_model.keras")
     ),
     "moong": tf.keras.models.load_model(
-        os.path.join(BASE_DIR, "models", "moong_disease_model.keras")
+        os.path.join(MODELS_DIR, "moong_disease_model.keras")
     ),
     "tur": tf.keras.models.load_model(
-        os.path.join(BASE_DIR, "models", "tur_disease_model.keras")
+        os.path.join(MODELS_DIR, "tur_disease_model.keras")
     )
 }
 
