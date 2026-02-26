@@ -1,7 +1,6 @@
 flask
 flask-cors
 mysql-connector-python
-gunicorn
 requests
 razorpay
 reportlab

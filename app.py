@@ -9,8 +9,8 @@ import razorpay
 from werkzeug.utils import secure_filename
 
 from db import get_db_connection
-from pest_ai import predict_pest
-from soil_ai import predict_soil
+# from pest_ai import predict_pest
+# from soil_ai import predict_soil
 from disease_solutions import DISEASE_SOLUTIONS
 
 from reportlab.lib.pagesizes import A4
@@ -339,72 +339,72 @@ TIPS_MAP = {
 CONFIDENCE_THRESHOLD = 0.60   # single place to tune
 
 
-@app.route("/soil-ai", methods=["POST"])
-def soil_ai():
-    import os, uuid                          # already imported in your app; kept for clarity
+# @app.route("/soil-ai", methods=["POST"])
+# def soil_ai():
+#     import os, uuid                          # already imported in your app; kept for clarity
 
-    # ── 1. Validate input ─────────────────────────────────────────
-    if "photo" not in request.files:
-        return jsonify({"error": "Photo required"}), 400
+#     # ── 1. Validate input ─────────────────────────────────────────
+#     if "photo" not in request.files:
+#         return jsonify({"error": "Photo required"}), 400
 
-    photo = request.files["photo"]
-    if photo.filename == "":
-        return jsonify({"error": "No photo selected"}), 400
+#     photo = request.files["photo"]
+#     if photo.filename == "":
+#         return jsonify({"error": "No photo selected"}), 400
 
-    # Block non-image file types
-    allowed = {"jpg", "jpeg", "png", "webp"}
-    ext = photo.filename.rsplit(".", 1)[-1].lower() if "." in photo.filename else ""
-    if ext not in allowed:
-        return jsonify({"error": f"Invalid file type. Allowed: {', '.join(allowed)}"}), 415
+#     # Block non-image file types
+#     allowed = {"jpg", "jpeg", "png", "webp"}
+#     ext = photo.filename.rsplit(".", 1)[-1].lower() if "." in photo.filename else ""
+#     if ext not in allowed:
+#         return jsonify({"error": f"Invalid file type. Allowed: {', '.join(allowed)}"}), 415
 
-    # ── 2. Save with a unique name (avoids filename collisions) ───
-    filename = f"{uuid.uuid4().hex}.{ext}"
-    path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-    photo.save(path)
+#     # ── 2. Save with a unique name (avoids filename collisions) ───
+#     filename = f"{uuid.uuid4().hex}.{ext}"
+#     path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+#     photo.save(path)
 
-    try:
-        # ── 3. Run model inference ────────────────────────────────
-        soil, conf = predict_soil(path)   # your existing predict_soil() unchanged
+#     try:
+#         # ── 3. Run model inference ────────────────────────────────
+#         soil, conf = predict_soil(path)   # your existing predict_soil() unchanged
 
-        # ── 4. Low-confidence → ask for a better photo ────────────
-        if conf < CONFIDENCE_THRESHOLD:
-            return jsonify({
-                "soil": {
-                    "en": "Unclear",
-                    "mr": "माती ओळखता आली नाही",
-                    "hi": "मिट्टी स्पष्ट नहीं है",
-                },
-                "confidence": round(conf * 100, 2),
-                "crops": [],
-                "tips": None,
-                "note": {
-                    "en": "Confidence too low. Upload a clear, close-up soil photo in good lighting.",
-                    "mr": "आत्मविश्वास कमी. चांगल्या प्रकाशात मातीचा स्पष्ट, जवळचा फोटो टाका.",
-                    "hi": "विश्वास कम है। अच्छी रोशनी में मिट्टी की साफ और नज़दीकी तस्वीर अपलोड करें।",
-                },
-            }), 200
+#         # ── 4. Low-confidence → ask for a better photo ────────────
+#         if conf < CONFIDENCE_THRESHOLD:
+#             return jsonify({
+#                 "soil": {
+#                     "en": "Unclear",
+#                     "mr": "माती ओळखता आली नाही",
+#                     "hi": "मिट्टी स्पष्ट नहीं है",
+#                 },
+#                 "confidence": round(conf * 100, 2),
+#                 "crops": [],
+#                 "tips": None,
+#                 "note": {
+#                     "en": "Confidence too low. Upload a clear, close-up soil photo in good lighting.",
+#                     "mr": "आत्मविश्वास कमी. चांगल्या प्रकाशात मातीचा स्पष्ट, जवळचा फोटो टाका.",
+#                     "hi": "विश्वास कम है। अच्छी रोशनी में मिट्टी की साफ और नज़दीकी तस्वीर अपलोड करें।",
+#                 },
+#             }), 200
 
-        # ── 5. Successful prediction ──────────────────────────────
-        return jsonify({
-            "soil":       SOIL_MAP.get(soil, {"en": soil, "mr": soil, "hi": soil}),
-            "confidence": round(conf * 100, 2),
-            "crops":      CROP_MAP.get(soil, []),
-            "tips":       TIPS_MAP.get(soil),                    # ← NEW: farming tips
-            "note": {
-                "en": "AI predicts soil type only. Consult a local agronomist for best results.",
-                "mr": "AI फक्त मातीचा प्रकार सांगते. उत्तम परिणामांसाठी कृषी तज्ञाशी संपर्क करा.",
-                "hi": "AI केवल मिट्टी का प्रकार बताता है। सर्वोत्तम परिणामों के लिए कृषि विशेषज्ञ से मिलें।",
-            },
-        }), 200
+#         # ── 5. Successful prediction ──────────────────────────────
+#         return jsonify({
+#             "soil":       SOIL_MAP.get(soil, {"en": soil, "mr": soil, "hi": soil}),
+#             "confidence": round(conf * 100, 2),
+#             "crops":      CROP_MAP.get(soil, []),
+#             "tips":       TIPS_MAP.get(soil),                    # ← NEW: farming tips
+#             "note": {
+#                 "en": "AI predicts soil type only. Consult a local agronomist for best results.",
+#                 "mr": "AI फक्त मातीचा प्रकार सांगते. उत्तम परिणामांसाठी कृषी तज्ञाशी संपर्क करा.",
+#                 "hi": "AI केवल मिट्टी का प्रकार बताता है। सर्वोत्तम परिणामों के लिए कृषि विशेषज्ञ से मिलें।",
+#             },
+#         }), 200
 
-    except Exception as e:
-        app.logger.error("soil_ai inference error: %s", e, exc_info=True)
-        return jsonify({"error": "Prediction failed. Please try again."}), 500
+#     except Exception as e:
+#         app.logger.error("soil_ai inference error: %s", e, exc_info=True)
+#         return jsonify({"error": "Prediction failed. Please try again."}), 500
 
-    finally:
-        # ── Always delete the temp file, even on errors ───────────
-        if os.path.exists(path):
-            os.remove(path)
+#     finally:
+#         # ── Always delete the temp file, even on errors ───────────
+#         if os.path.exists(path):
+#             os.remove(path)
     
 # ---------- DISEASE AI ----------
 @app.route("/disease-ai", methods=["POST"])

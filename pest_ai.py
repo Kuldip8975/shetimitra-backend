@@ -72,5 +72,5 @@
 #     else:
 #         return "uncertain", prob
 
-def predict_pest(image_path, crop):
-    return "healthy", 0.95
+# def predict_pest(image_path, crop):
+#     return "healthy", 0.95
