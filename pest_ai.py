@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODELS_DIR = os.path.join(os.path.dirname(BASE_DIR), "ai_training")
+MODELS_DIR = os.path.join(BASE_DIR, "models")
 
 MODELS = {
     "maize": tf.keras.models.load_model(
