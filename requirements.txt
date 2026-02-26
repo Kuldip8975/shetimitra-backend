@@ -8,5 +8,5 @@ reportlab
 numpy
 pillow
 opencv-python-headless
-tensorflow==2.16.1
-keras==3.3.3
+tensorflow==2.17.0
+keras==3.4.1
