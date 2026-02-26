@@ -8,23 +8,29 @@ MODELS_DIR = os.path.join(os.path.dirname(BASE_DIR), "ai_training")
 
 MODELS = {
     "maize": tf.keras.models.load_model(
-        os.path.join(MODELS_DIR, "maize_disease_model.keras")
+        os.path.join(MODELS_DIR, "maize_disease_model.keras"),
+        compile=False
     ),
     "cotton": tf.keras.models.load_model(
-        os.path.join(MODELS_DIR, "cotton_disease_model.keras")
+        os.path.join(MODELS_DIR, "cotton_disease_model.keras"),
+        compile=False
     ),
     "chickpea": tf.keras.models.load_model(
-        os.path.join(MODELS_DIR, "chickpea_disease_model.keras")
+        os.path.join(MODELS_DIR, "chickpea_disease_model.keras"),
+        compile=False
     ),
     "groundnut": tf.keras.models.load_model(
-        os.path.join(MODELS_DIR, "groundnut_disease_model.keras")
+        os.path.join(MODELS_DIR, "groundnut_disease_model.keras"),
+        compile=False
     ),
     "moong": tf.keras.models.load_model(
-        os.path.join(MODELS_DIR, "moong_disease_model.keras")
+        os.path.join(MODELS_DIR, "moong_disease_model.keras"),
+        compile=False
     ),
     "tur": tf.keras.models.load_model(
-        os.path.join(MODELS_DIR, "tur_disease_model.keras")
-    )
+        os.path.join(MODELS_DIR, "tur_disease_model.keras"),
+        compile=False
+    ),
 }
 
 # -------- MAIN DISEASE FUNCTION --------
